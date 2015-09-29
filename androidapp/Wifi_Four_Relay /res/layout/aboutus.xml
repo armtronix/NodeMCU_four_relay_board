@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/ScrollView01"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent" >
+
+
+        <LinearLayout 
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal" 
+          >
+            
+         <TextView android:id="@+id/title_right_text"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:maxLines="8"
+        android:text="
+        Naren Nayak \r\n
+        #42/43 Eureka Junction,\r\n
+        T.B Road \r\n
+        Hubli – 580029\r\n
+        Web:http://armtronix.net\r\n
+        Email: narenayak@gmail.com\r\n
+        Tel: +91 9620165837\r\n
+        Tel: +918143149660 "></TextView>
+        
+  </LinearLayout>
+</ScrollView>
