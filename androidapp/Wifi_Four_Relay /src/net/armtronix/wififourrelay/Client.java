@@ -95,13 +95,13 @@ public class Client extends Activity {
             	String temp="";
             	if(isChecked)
             	{
-            	 temp="on1\n\r";
+            	 temp="on01\n\r";
             	 //onoffbutton.updateMovieFavorite(movieObj.getId().intValue(), 1);
             	 //onoffbutton.setText("ON");
             	}
             	else
             	{
-                 temp="off1\n\r";
+                 temp="off01\n\r";
                  //onoffbutton.setText("OFF");
                  //onoffbutton.updateMovieFavorite(movieObj.getId().intValue(), 1);
             	}
@@ -129,13 +129,13 @@ public class Client extends Activity {
             	String temp="";
             	if(isChecked)
             	{
-            	 temp="on2\n\r";
+            	 temp="on02\n\r";
             	 //onoffbutton.updateMovieFavorite(movieObj.getId().intValue(), 1);
             	 //onoffbutton.setText("ON");
             	}
             	else
             	{
-                 temp="off2\n\r";
+                 temp="off02\n\r";
                  //onoffbutton.setText("OFF");
                  //onoffbutton.updateMovieFavorite(movieObj.getId().intValue(), 1);
             	}
@@ -161,13 +161,13 @@ public class Client extends Activity {
             	String temp="";
             	if(isChecked)
             	{
-            	 temp="on3\n\r";
+            	 temp="on03\n\r";
             	 //onoffbutton.updateMovieFavorite(movieObj.getId().intValue(), 1);
             	 //onoffbutton.setText("ON");
             	}
             	else
             	{
-                 temp="off3\n\r";
+                 temp="off03\n\r";
                  //onoffbutton.setText("OFF");
                  //onoffbutton.updateMovieFavorite(movieObj.getId().intValue(), 1);
             	}
@@ -194,12 +194,12 @@ public class Client extends Activity {
             	String temp="";
             	if(isChecked)
             	{
-            		temp="on4\n\r";;
+            		temp="on04\n\r";;
 
             	}
             	else
             	{
-            		temp="off4\n\r";
+            		temp="off04\n\r";
 
             	}
             		
