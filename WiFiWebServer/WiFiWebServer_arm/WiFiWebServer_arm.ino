@@ -29,7 +29,7 @@ void setup() {
   pinMode(Relay_Pin_14, OUTPUT);
   
   digitalWrite(Relay_Pin_05, HIGH);
-  
+  WiFi.mode(WIFI_AP_STA);
   // Connect to WiFi network
   Serial.println();
   Serial.println();
@@ -99,7 +99,7 @@ while(!client.available())
   int val;
   if (req.indexOf("on01")!=-1)
   {
-    val = 0;
+    //val = 0;
     Serial.println("Relay01 is on ");
     client.write("01 is on\r\n");
      digitalWrite(Relay_Pin_04, HIGH);
@@ -108,7 +108,7 @@ while(!client.available())
   }
   else if (req.indexOf("off01")!=-1)
   {
-    val = 1;
+    //val = 1;
     Serial.println("Relay01 is off ");
     client.write("01 is off\r\n");
     digitalWrite(Relay_Pin_04, LOW);
@@ -116,7 +116,7 @@ while(!client.available())
   }
   if (req.indexOf("on02")!=-1)
   {
-    val = 0;
+    //val = 0;
     Serial.println("Relay02 is on ");
     client.write("02 is on\r\n");
      digitalWrite(Relay_Pin_12, HIGH);
@@ -125,7 +125,7 @@ while(!client.available())
   }
   else if (req.indexOf("off02")!=-1)
   {
-    val = 1;
+    //val = 1;
     Serial.println("Relay02 is off ");
     client.write("02 is off\r\n");
     digitalWrite(Relay_Pin_12, LOW);
@@ -133,7 +133,7 @@ while(!client.available())
   }
   if (req.indexOf("on03")!=-1)
   {
-    val = 0;
+    //val = 0;
     Serial.println("Relay03 is on ");
     client.write("03 is on\r\n");
      digitalWrite(Relay_Pin_13, HIGH);
@@ -142,7 +142,7 @@ while(!client.available())
   }
   else if (req.indexOf("off03")!=-1)
   {
-    val = 1;
+    //val = 1;
     Serial.println("Relay03 is off ");
     client.write("03 is off\r\n");
     digitalWrite(Relay_Pin_13, LOW);
@@ -150,23 +150,24 @@ while(!client.available())
   }
     if (req.indexOf("on04")!=-1)
   {
-    val = 0;
+    //val = 0;
     Serial.println("Relay04 is on ");
-    client.write("03 is on\r\n");
+    client.write("04 is on\r\n");
      digitalWrite(Relay_Pin_14, HIGH);
     //client.write("invalid request");
     waittime=0; 
   }
   else if (req.indexOf("off04")!=-1)
   {
-    val = 1;
+    //val = 1;
     Serial.println("Relay04 is off ");
     client.write("04 is off\r\n");
+    digitalWrite(Relay_Pin_14, LOW);
     waittime=0; 
   }
     if (req.indexOf("ledon")!=-1)
   {
-    val = 0;
+    //val = 0;
     Serial.println("Led is on ");
     client.write("Led is on\r\n");
     digitalWrite(Relay_Pin_05, HIGH);
@@ -175,7 +176,7 @@ while(!client.available())
   }
   else if (req.indexOf("ledoff")!=-1)
   {
-    val = 1;
+    //val = 1;
     Serial.println("Led is off ");
     client.write("Led is off\r\n");
     digitalWrite(Relay_Pin_05, LOW);
@@ -241,7 +242,7 @@ while(!client.available())
   }
   
   // Set GPIO2 according to the request
-  digitalWrite(5, val);
+  //digitalWrite(5, val);
   client.flush();
   //server.available();
   if(server.available())
