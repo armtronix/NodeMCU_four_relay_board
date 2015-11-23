@@ -9,8 +9,8 @@
 #include <ESP8266WiFi.h>
 #include <PubSubClient.h>
 char* topic = "Relay_Control";
-const char *ssid =  "Omega_Naren";   // cannot be longer than 32 characters!
-const char *pass =  "naren_1234578906";   //
+const char *ssid =  "xxxx";   // cannot be longer than 32 characters!
+const char *pass =  "xxxx";   //
 
 
 // Update these with values suitable for your network.
