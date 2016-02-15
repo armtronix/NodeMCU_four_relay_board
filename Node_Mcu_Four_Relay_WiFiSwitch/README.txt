@@ -21,6 +21,7 @@ The push button have to switch to ground.
   * Will display the GIPIO state and a switch form for it
   
  * http://server_ip/gpio?state=0
+
   * Will change the GPIO directly and display the above aswell
   
  * http://server_ip/cleareeprom 
@@ -32,21 +33,12 @@ The push button have to switch to ground.
   
 <b>server_ip</b> is the IP address of the ESP8266 module, will be printed to Serial when the module is connected.
 
-## Hardware setup
-Your WiFi switch should be connected like this
+## Hardware
+http://armtronix.net/wifi%20nodemcu%20four%20relay%20board.html
+## Setup and other instructions 
+http://www.instructables.com/id/NodeMCU-ESP8266-Based-Switch-Board-with-Raw-TCPIP-/
 
-![Schematic](https://raw.githubusercontent.com/biohazardxxx/ESP_WiFiSwitch/master/ElectronicDesignAutomation/Schematic.png)
 
-You can reorder the working PCB here: https://oshpark.com/shared_projects/xoEZ3PnV or get it from any where else from the KiCad design files "ElectronicDesignAutomation" folder.
-
-## Parts list
-* ESP8266-03 module
-* AC to DC Power Module Supply Isolation Input: AC90-240V Output: 3.3V 500mA like this * http://www.ebay.com/itm/271636529720?_trksid=p2060353.m2749.l2649&ssPageName=STRK%3AMEBIDX%3AIT
-* Resistor 220 Ohm SMD 1206        1x
-* Resistor 330 Ohm SMD 1206        1x
-* Resistor 4k7 SMD 1206   1x
-* Optocuppler MOC3040  SMD      1x
-* Tryac BT136D     1x
 
 ## Usage
 <b>For default usage you can use the pre build firmware and flash it with NodeMcu flasher.</b>
