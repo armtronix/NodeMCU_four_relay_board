@@ -1,5 +1,6 @@
-Code and supporting documents for Node MCU four relay board 
+Code and supporting documents for Node MCU four relay board (Wifi Quad Relay Board ) 
 You will find
+Arduino Code for HTTP/MQTT selectable mode with android apk for Http (NodeMCU_four_relay_board Node_Mcu_Four_Relay_WiFiSwitch)
 Arduino Code for basic TCPserver
 Arduino Code for basic Mqtt Client
 Android Apk and Android App raw tcp/ip source code 
