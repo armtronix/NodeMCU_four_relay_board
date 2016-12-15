@@ -193,7 +193,7 @@ void webHandleConfig(){
  
   s = "Configuration of " + hostName + " at ";
   s += ipStr;
-  s += "<p><a href=\"/gpio\">Controle GPIO</a><br />";
+  s += "<p><a href=\"/gpio\">Control GPIO</a><br />";
   s += st;
   s += "<form method='get' action='a'>";
   s += "<label>SSID: </label><input name='ssid' length=32><label> Pass: </label><input name='pass' type='password' length=64></br>";
@@ -259,7 +259,7 @@ void webHandleRoot(){
   String s;
   s = "<p>Hello from ESP8266";
   s += "</p>";
-  s += "<a href=\"/gpio\">Controle GPIO</a><br />";
+  s += "<a href=\"/gpio\">Control GPIO</a><br />";
   s += "<a href=\"/cleareeprom\">Clear settings an boot into Config mode</a><br />";
   s += "\r\n\r\n";
   Serial.println("Sending 200");  
@@ -312,6 +312,10 @@ void webHandleGpio(){
       Serial.print("Led switched via web request to  ");      
       Serial.println(state_05);      
     }
+     if(server.arg("reboot")=="1")
+    {
+     ESP.reset(); 
+    }
     
     s = "Relay_GPIO_04 ";
     s += (digitalRead(OUTPIN_04))?"ON":"OFF";
@@ -352,6 +356,7 @@ void webHandleGpio(){
     s += ">LED_On <input type='radio' name='state_05' value='0' ";
     s += (digitalRead(OUTLED))?"":"checked";
     s += ">LED_OFF <input type='submit' value='Submit'></form></p>"; 
+    s +="<p><a href=\"gpio?reboot=1\">Reboot</a></p>";  
     
   
     server.send(200, "text/html", s);    

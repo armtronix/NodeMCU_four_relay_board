@@ -6,7 +6,18 @@
  *    http://server_ip will give a config page with 
  *  While a WiFi config is set:
  *    http://server_ip/gpio -> Will display the GIPIO state and a switch form for it
- *    http://server_ip/gpio?state=0 -> Will change the GPIO directly and display the above aswell
+ *    http://server_ip/gpio?state04=x -> Will change the GPIO directly and display the above aswell x will be 0-for off 1-for on
+ *    http://server_ip/gpio?state12=x -> Will change the GPIO directly and display the above aswell x will be 0-for off 1-for on
+ *    http://server_ip/gpio?state13=x -> Will change the GPIO directly and display the above aswell x will be 0-for off 1-for on
+ *    http://server_ip/gpio?state14=x -> Will change the GPIO directly and display the above aswell x will be 0-for off 1-for on
+ *    http://server_ip/gpio?state05=x -> Will change the GPIO directly and display the above aswell x will be 0-for off 1-for on
+ *    MQTT Commands 
+ *    R4_ON ,R4_OFF for on and off
+ *    R12_ON ,R12_OFF for on and off
+ *    R13_ON ,R13_OFF for on and off
+ *    R14_ON ,R14_OFF for on and off
+ *    R5_ON ,R5_OFF for on and off
+ *    
  *    http://server_ip/cleareeprom -> Will reset the WiFi setting and rest to configure mode as AP
  *  server_ip is the IP address of the ESP8266 module, will be 
  *  printed to Serial when the module is connected. (most likly it will be 192.168.4.1)
@@ -20,6 +31,8 @@
  *  - http://www.esp8266.com/viewforum.php?f=25
  *  - http://www.esp8266.com/viewtopic.php?f=29&t=2745
  *  - And the whole Arduino and ESP8266 comunity
+ *  S2 -Button is connected to Reset
+ *  S1 -Button is connected to GPIO0
  */
 
 #define DEBUG
@@ -200,6 +213,10 @@ void loop() {
     }
     server.handleClient();
     delay(1);
+     if(esid != "" && WiFi.status() != WL_CONNECTED) //wifi reconnect part
+      {
+        Scan_Wifi_Networks();
+      }
   } else if (WiFi.status() == WL_CONNECTED || webtypeGlob == 1){
     //Debugln("DEBUG: loop() wifi connected & webServer ");
     if (iotMode==0 || webtypeGlob == 1){
