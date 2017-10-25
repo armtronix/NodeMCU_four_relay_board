@@ -6,18 +6,7 @@
  *    http://server_ip will give a config page with 
  *  While a WiFi config is set:
  *    http://server_ip/gpio -> Will display the GIPIO state and a switch form for it
- *    http://server_ip/gpio?state04=x -> Will change the GPIO directly and display the above aswell x will be 0-for off 1-for on
- *    http://server_ip/gpio?state12=x -> Will change the GPIO directly and display the above aswell x will be 0-for off 1-for on
- *    http://server_ip/gpio?state13=x -> Will change the GPIO directly and display the above aswell x will be 0-for off 1-for on
- *    http://server_ip/gpio?state14=x -> Will change the GPIO directly and display the above aswell x will be 0-for off 1-for on
- *    http://server_ip/gpio?state05=x -> Will change the GPIO directly and display the above aswell x will be 0-for off 1-for on
- *    MQTT Commands 
- *    R4_ON ,R4_OFF for on and off
- *    R12_ON ,R12_OFF for on and off
- *    R13_ON ,R13_OFF for on and off
- *    R14_ON ,R14_OFF for on and off
- *    R5_ON ,R5_OFF for on and off
- *    
+ *    http://server_ip/gpio?state=0 -> Will change the GPIO directly and display the above aswell
  *    http://server_ip/cleareeprom -> Will reset the WiFi setting and rest to configure mode as AP
  *  server_ip is the IP address of the ESP8266 module, will be 
  *  printed to Serial when the module is connected. (most likly it will be 192.168.4.1)
@@ -31,8 +20,6 @@
  *  - http://www.esp8266.com/viewforum.php?f=25
  *  - http://www.esp8266.com/viewtopic.php?f=29&t=2745
  *  - And the whole Arduino and ESP8266 comunity
- *  S2 -Button is connected to Reset
- *  S1 -Button is connected to GPIO0
  */
 
 #define DEBUG
@@ -61,6 +48,7 @@
 #include <PubSubClient.h>
 #include <ArduinoJson.h>
 #include "FS.h"
+#include <Arduino.h>
 
 extern "C" {
   #include "user_interface.h" //Needed for the reset command
@@ -98,6 +86,7 @@ boolean inApMode=0;
 int webtypeGlob;
 int otaCount=300; //imeout in sec for OTA mode
 int current; //Current state of the button
+int tds =0;
 unsigned long count = 0; //Button press time counter
 String st; //WiFi Stations HTML list
 String state; //State of light
@@ -153,6 +142,80 @@ void setup() {
   Debugln("DEBUG: Starting the main loop");
 }
 
+void InitInterrupt(timercallback handler)
+    { 
+      //Debugln("DEBUG: loop() Timer to check wifi availablity 2");
+        timer1_disable();
+        timer1_isr_init();
+        timer1_attachInterrupt(handler);
+        timer1_enable(TIM_DIV265, TIM_EDGE, TIM_LOOP);
+        timer1_write(8000000);//max8388607//75*5
+    }
+
+void  ICACHE_RAM_ATTR do_on_delay()
+{
+  timer1_disable();
+          Debugln("DEBUG: loop() Timer to check wifi availablity 3");
+//
+unsigned int c = 0;
+unsigned int d= 0;
+unsigned int e=0;
+unsigned int f=0;
+unsigned int g=0;
+// // Debugln("Wifi test...");  
+   while ( c < 65000 ) {
+    
+     while ( d < 65000 ) 
+     {
+    while ( e < 65000 ) 
+     {
+
+    while ( f < 65000 ) 
+     {
+    while ( g < 65000 ) 
+     {
+    
+    g++;
+     }
+     f++;
+     }
+    e++;
+     }
+    d++;
+     }
+    c++;
+  }
+  
+ if (WiFi.status() != WL_CONNECTED)
+ {
+
+  if(esid=="" && epass=="")
+  {
+    Serial.print("no data ");
+   //timer1_disable();
+   tds=1;
+  }
+  else
+  {
+    Serial.println();
+  Serial.println();
+  Serial.println("Startup");
+  
+  // test esid 
+  WiFi.disconnect();
+  WiFi.mode(WIFI_STA);
+  Serial.print("Connecting to WiFi ");
+  Serial.println(esid);
+  Debugln(epass);
+  WiFi.begin((char*)esid.c_str(), (char*)epass.c_str());
+   launchWeb(0);
+   tds=0;
+  }
+
+ }
+  
+
+}
 
 void btn_handle()
 {
@@ -213,18 +276,22 @@ void loop() {
     }
     server.handleClient();
     delay(1);
-
   } else if (WiFi.status() == WL_CONNECTED || webtypeGlob == 1){
     //Debugln("DEBUG: loop() wifi connected & webServer ");
     if (iotMode==0 || webtypeGlob == 1){
       //Debugln("DEBUG: loop() Web mode requesthandling ");
       server.handleClient();
       delay(1);
-      if(esid != "" && WiFi.status() != WL_CONNECTED) //wifi reconnect part
+      if (WiFi.status() != WL_CONNECTED && tds==0)
       {
-        Scan_Wifi_Networks();
+        tds =1;
+        Debugln("DEBUG: loop() Timer to check wifi availablity 1");
+        InitInterrupt(do_on_delay);
+      
       }
-    } else if (iotMode==1 && webtypeGlob != 1 && otaFlag !=1){
+      
+    } 
+    else if (iotMode==1 && webtypeGlob != 1 && otaFlag !=1){
           //Debugln("DEBUG: loop() MQTT mode requesthandling ");
           if (!connectMQTT()){
               delay(200);          

@@ -1,0 +1,9 @@
+Code and supporting documents for Node MCU four relay board (Wifi Quad Relay Board ) 
+You will find
+Arduino Code for basic TCPserver
+Arduino Code for basic Mqtt Client
+Android Apk and Android App raw tcp/ip source code 
+Instructable
+http://www.instructables.com/id/NodeMCU-ESP8266-Based-Switch-Board-with-Raw-TCPIP-/
+Website
+http://armtronix.net
