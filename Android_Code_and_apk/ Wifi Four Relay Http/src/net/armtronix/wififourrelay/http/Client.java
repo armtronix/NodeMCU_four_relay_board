@@ -239,7 +239,7 @@ public class Client extends Activity {
 
 	private String SendDataFromAndroidDevice() {
 	    String result = "";
-        String u="http://"+SERVER_MAIN+temp;
+        String u="http://"+SERVER_MAIN+":"+SERVERPORT_MAIN+temp;
 	    try {
 	        HttpClient httpclient = new DefaultHttpClient();
 	        HttpGet getMethod = new HttpGet(u);
