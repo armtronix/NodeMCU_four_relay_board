@@ -1,3 +1,6 @@
+
+
+
 /*
  *  This sketch is running a web server for configuring WiFI if can't connect or for controlling of one GPIO to switch a light/LED
  *  Also it supports to change the state of the light via MQTT message and gives back the state after change.
@@ -56,12 +59,16 @@
 #include <ESP8266mDNS.h>
 #include <WiFiClient.h>
 #include <ESP8266WebServer.h>
+#include <ESPAsyncWebServer.h>
+#include <ESPAsyncTCP.h>
+#include <Hash.h>
 //#include <EEPROM.h>
 #include <Ticker.h>
 #include <PubSubClient.h>
 #include <ArduinoJson.h>
 #include "FS.h"
-
+#include "fauxmoESP.h"
+fauxmoESP fauxmo;
 extern "C" {
   #include "user_interface.h" //Needed for the reset command
 }
@@ -111,18 +118,26 @@ String subTopic;
 String mqttServer = "";
 const char* otaServerIndex = "<form method='POST' action='/update' enctype='multipart/form-data'><input type='file' name='update'><input type='submit' value='Update'></form>";
 
+/*Alexa event names */
+String firstName;
+String secondName;
+String thirdName;
+String fourthName;
 //-------------- void's -------------------------------------------------------------------------------------
 void setup() {
   Serial.begin(115200);
-  Serial.println("Four Relay board");
-  WiFi.printDiag(Serial);
   delay(10);
   // prepare GPIO2
   pinMode(OUTPIN_04, OUTPUT);
+  digitalWrite(OUTPIN_04, LOW);
   pinMode(OUTPIN_12, OUTPUT);
+  digitalWrite(OUTPIN_12, LOW);
   pinMode(OUTPIN_13, OUTPUT);
+  digitalWrite(OUTPIN_13, LOW);
   pinMode(OUTPIN_14, OUTPUT);
+  digitalWrite(OUTPIN_14, LOW);
   pinMode(OUTLED, OUTPUT);
+  digitalWrite(OUTLED, LOW);
   pinMode(INPIN, INPUT_PULLUP);
   digitalWrite(OUTLED, HIGH);
   btn_timer.attach(0.05, btn_handle);
@@ -153,6 +168,15 @@ void setup() {
   Debug("otaFlag:");
   Debugln(otaFlag);
   Debugln("DEBUG: Starting the main loop");
+
+    // Device Names for Simulated Wemo switches
+    fauxmo.addDevice((char*)firstName.c_str());
+    fauxmo.addDevice((char*)secondName.c_str());
+    fauxmo.addDevice((char*)thirdName.c_str());
+    fauxmo.addDevice((char*)fourthName.c_str());
+    fauxmo.onMessage(callback);
+
+//    Serial.println((char*)firstName.c_str());
 }
 
 
@@ -198,6 +222,7 @@ void btn_handle()
 
 //-------------------------------- Main loop ---------------------------
 void loop() {
+  
   //Debugln("DEBUG: loop() begin");
   if(configToClear==1){
     //Debugln("DEBUG: loop() clear config flag set!");
@@ -215,17 +240,16 @@ void loop() {
     }
     server.handleClient();
     delay(1);
-
+     if(esid != "" && WiFi.status() != WL_CONNECTED) //wifi reconnect part
+      {
+        Scan_Wifi_Networks();
+      }
   } else if (WiFi.status() == WL_CONNECTED || webtypeGlob == 1){
     //Debugln("DEBUG: loop() wifi connected & webServer ");
     if (iotMode==0 || webtypeGlob == 1){
       //Debugln("DEBUG: loop() Web mode requesthandling ");
       server.handleClient();
       delay(1);
-      if(esid != "" && WiFi.status() != WL_CONNECTED) //wifi reconnect part
-      {
-        Scan_Wifi_Networks();
-      }
     } else if (iotMode==1 && webtypeGlob != 1 && otaFlag !=1){
           //Debugln("DEBUG: loop() MQTT mode requesthandling ");
           if (!connectMQTT()){
@@ -243,5 +267,53 @@ void loop() {
     delay(1000);
     initWiFi(); //Try to connect again
   }
+  fauxmo.handle();
     //Debugln("DEBUG: loop() end");
+}
+
+
+// -----------------------------------------------------------------------------
+// Device Callback
+// -----------------------------------------------------------------------------
+void callback(uint8_t device_id, const char * device_name, bool state) {
+  Serial.print("Device "); Serial.print(device_name); 
+  Serial.print(" state: ");
+  if (state) {
+    Serial.println("ON");
+  } else {
+    Serial.println("OFF");
+  }
+  //Switching action on detection of device name
+  if ( (strcmp(device_name, (char*)firstName.c_str()) == 0) ) {
+    // adjust the relay immediately!
+    if (state) {
+      digitalWrite(OUTPIN_04, HIGH);
+    } else {
+      digitalWrite(OUTPIN_04, LOW);
+    }
+  }
+  if ( (strcmp(device_name, (char*)secondName.c_str()) == 0) ) {
+    // adjust the relay immediately!
+    if (state) {
+      digitalWrite(OUTPIN_12, HIGH);
+    } else {
+      digitalWrite(OUTPIN_12, LOW);
+    }
+  }
+  if ( (strcmp(device_name, (char*)thirdName.c_str()) == 0) ) {
+    // adjust the relay immediately!
+    if (state) {
+      digitalWrite(OUTPIN_13, HIGH);
+    } else {
+      digitalWrite(OUTPIN_13, LOW);
+    }
+  }
+  if ( (strcmp(device_name, (char*)fourthName.c_str()) == 0) ) {
+    // adjust the relay immediately!
+    if (state) {
+      digitalWrite(OUTPIN_14, HIGH);
+    } else {
+      digitalWrite(OUTPIN_14, LOW);
+    }
+  }
 }
