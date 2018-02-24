@@ -1,6 +1,3 @@
-
-
-
 /*
  *  This sketch is running a web server for configuring WiFI if can't connect or for controlling of one GPIO to switch a light/LED
  *  Also it supports to change the state of the light via MQTT message and gives back the state after change.
@@ -59,9 +56,6 @@
 #include <ESP8266mDNS.h>
 #include <WiFiClient.h>
 #include <ESP8266WebServer.h>
-#include <ESPAsyncWebServer.h>
-#include <ESPAsyncTCP.h>
-#include <Hash.h>
 //#include <EEPROM.h>
 #include <Ticker.h>
 #include <PubSubClient.h>
