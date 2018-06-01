@@ -234,16 +234,17 @@ void loop() {
     }
     server.handleClient();
     delay(1);
-     if(esid != "" && WiFi.status() != WL_CONNECTED) //wifi reconnect part
-      {
-        Scan_Wifi_Networks();
-      }
+    
   } else if (WiFi.status() == WL_CONNECTED || webtypeGlob == 1){
     //Debugln("DEBUG: loop() wifi connected & webServer ");
     if (iotMode==0 || webtypeGlob == 1){
       //Debugln("DEBUG: loop() Web mode requesthandling ");
       server.handleClient();
       delay(1);
+       if(esid != "" && WiFi.status() != WL_CONNECTED) //wifi reconnect part
+      {
+        Scan_Wifi_Networks();
+      }
     } else if (iotMode==1 && webtypeGlob != 1 && otaFlag !=1){
           //Debugln("DEBUG: loop() MQTT mode requesthandling ");
           if (!connectMQTT()){
